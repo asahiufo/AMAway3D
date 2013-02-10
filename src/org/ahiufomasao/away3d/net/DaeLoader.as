@@ -22,6 +22,7 @@
 	 */
 	public class DaeLoader extends EventDispatcher implements ILoader
 	{
+		private var _ns:String;
 		private var _source:Object;
 		private var _assetLoaderContext:AssetLoaderContext;
 		
@@ -72,11 +73,13 @@
 		/**
 		 * 新しい <code>DaeLoader</code> クラスのインスタンスを生成します.
 		 * 
+		 * @param ns                 ネームスペース
 		 * @param source             パース対象オブジェクト
 		 * @param assetLoaderContext アセットローダーコンテキスト
 		 */
-		public function DaeLoader(source:Object, assetLoaderContext:AssetLoaderContext = null)
+		public function DaeLoader(ns:String, source:Object, assetLoaderContext:AssetLoaderContext = null)
 		{
+			_ns                 = ns;
 			_source             = source;
 			_assetLoaderContext = assetLoaderContext;
 			
@@ -103,7 +106,7 @@
 			_loader.addEventListener(AssetEvent.ASSET_COMPLETE, _onAssetComplete);
 			_loader.addEventListener(LoaderEvent.RESOURCE_COMPLETE, _onResourceComplete);
 			_loader.addEventListener(LoaderEvent.LOAD_ERROR, _onLoadError);
-			_loader.loadData(_source, _assetLoaderContext, null, new DAEParser());
+			_loader.loadData(_source, _assetLoaderContext, _ns, new DAEParser());
 		}
 		
 		/**

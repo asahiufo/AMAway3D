@@ -22,8 +22,8 @@
 	 */
 	public class DaeLoader extends EventDispatcher implements ILoader
 	{
-		private var _ns:String;
 		private var _source:Object;
+		private var _ns:String;
 		private var _assetLoaderContext:AssetLoaderContext;
 		
 		private var _mesh:Mesh;
@@ -73,14 +73,14 @@
 		/**
 		 * 新しい <code>DaeLoader</code> クラスのインスタンスを生成します.
 		 * 
-		 * @param ns                 ネームスペース
 		 * @param source             パース対象オブジェクト
+		 * @param ns                 ネームスペース
 		 * @param assetLoaderContext アセットローダーコンテキスト
 		 */
-		public function DaeLoader(ns:String, source:Object, assetLoaderContext:AssetLoaderContext = null)
+		public function DaeLoader(source:Object, ns:String = null, assetLoaderContext:AssetLoaderContext = null)
 		{
-			_ns                 = ns;
 			_source             = source;
+			_ns                 = ns;
 			_assetLoaderContext = assetLoaderContext;
 			
 			_mesh            = null;

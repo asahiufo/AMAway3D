@@ -75,10 +75,29 @@ package org.ahiufomasao.away3d.timeline
 				return;
 			}
 			
+			var animationClipNode:AnimationClipNodeBase = _animator.activeAnimation as AnimationClipNodeBase;
+			
 			// Away3D 側のアニメーションのトータルミリ秒
-			var totalDuration:uint = AnimationClipNodeBase(_animator.activeAnimation).totalDuration;
+			var totalDuration:uint = 0;
+			// ループする場合はすべてのアニメーションのトータルミリ秒を採用
+			if (_mainTimeline.currentChildTimeline.repeat)
+			{
+				totalDuration = animationClipNode.totalDuration;
+			}
+			// ループしない場合は末尾フレームのミリ秒は捨ててトータルミリ秒を計算
+			else
+			{
+				var durations:Vector.<uint> = animationClipNode.durations;
+				var length:uint = durations.length;
+				for (var i:uint = 0; i < length - 2; i++)
+				{
+					totalDuration += durations[i];
+				}
+			}
+			
 			// タイムラインの全フレーム数
 			var frameLength:uint = _mainTimeline.currentChildTimeline.length;
+			
 			// 1 フレーム辺りのミリ秒
 			var oneFrameMS:Number = totalDuration / frameLength;
 			

@@ -11,6 +11,7 @@
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.utils.Dictionary;
 	import org.ahiufomasao.utility.net.ILoader;
 	
 	// TODO: asdoc
@@ -22,8 +23,11 @@
 	 */
 	public class DaeLoader extends EventDispatcher implements ILoader
 	{
-		private var _ns:String;
+		public static const MESH_DATA_KEY:String = "mesh";
+		public static const OBJECT_DATA_KEY:String = "object";
+		
 		private var _source:Object;
+		private var _ns:String;
 		private var _assetLoaderContext:AssetLoaderContext;
 		
 		private var _mesh:Mesh;
@@ -60,27 +64,35 @@
 		 */
 		public function get complete():Boolean { return _complete; }
 		/**
-		 * 読み込まれた Asset データ（<code>ObjectContainer3D</code> オブジェクト）です.
+		 * 読み込まれた Asset データです.
+		 * <p>
+		 * 以下形式の <code>Dictionary</code> オブジェクトが設定されます。
+		 * <code>dict[DaeLoader.MESH_DATA_KEY] as Mesh</code> 
+		 * <code>dict[DaeLoader.OBJECT_DATA_KEY] as ObjectContainer3D</code> 
+		 * </p>
 		 * <p>
 		 * ロードが完了するまでは <code>null</code> です。
 		 * </p>
 		 */
 		public function get data():Object
 		{
-			return _objectContainer;
+			var dict:Dictionary = new Dictionary();
+			dict[MESH_DATA_KEY]   = _mesh;
+			dict[OBJECT_DATA_KEY] = _objectContainer;
+			return dict;
 		}
 		
 		/**
 		 * 新しい <code>DaeLoader</code> クラスのインスタンスを生成します.
 		 * 
-		 * @param ns                 ネームスペース
 		 * @param source             パース対象オブジェクト
+		 * @param ns                 ネームスペース
 		 * @param assetLoaderContext アセットローダーコンテキスト
 		 */
-		public function DaeLoader(ns:String, source:Object, assetLoaderContext:AssetLoaderContext = null)
+		public function DaeLoader(source:Object, ns:String = null, assetLoaderContext:AssetLoaderContext = null)
 		{
-			_ns                 = ns;
 			_source             = source;
+			_ns                 = ns;
 			_assetLoaderContext = assetLoaderContext;
 			
 			_mesh            = null;
